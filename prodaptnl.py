@@ -32,7 +32,7 @@ def update_data(mongo_uri, users, posts, comments):
         db.posts.update_one(key, data, upsert=True)
 
     for comment_detail in sorted(comments):
-        key = {"commentId": post_detail}
+        key = {"commentId": comment_detail}
         data = {"$set": {"commentId": comment_detail,
                          "name": comments[comment_detail]["name"],
                          "email": comments[comment_detail]["email"],
