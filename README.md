@@ -106,6 +106,28 @@ print(response.text)
 
 **AbishekKJ/ProdaptNL/prodaptnl.py**:
 * Python program which makes requests call to tehe external apis and will collate the data into single dictionary. Running this program standalone will pretty print posts dictionary which consists of all data.
+
+Note:
+* MongoDB update call is executed in separate thread using thread pool executor
+* Commenting out  ** self.upload_data_to_db()** will skip the mongo db update will ren response much quicker
+```python
+class ProdaptNLService:
+
+    def __init__(self, posts_data, comments_data):
+
+        self.db_client = None
+        self.db = None
+        self.posts_data = posts_data
+        self.comments_data = comments_data
+        self.posts = {}
+        self.users = {}
+        self.comments = {}
+        self.process_data_from_api()
+        self.upload_data_to_db()
+```
+
+
+Posts data:
 ```python
 {1: {'body': 'quia et suscipit\n'
              'suscipit recusandae consequuntur expedita et cum\n'
