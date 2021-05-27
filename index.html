@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+* {
+  box-sizing: border-box;
+}
+
+/* Add a gray background color with some padding */
+body {
+  font-family: Arial;
+  padding: 20px;
+  background: #f1f1f1;
+  padding: 0;
+  margin: 0;
+  text-align: justify;
+}
+
+/* Header/Blog Title */
+.header {
+  font-size: 20px;
+  text-align: center;
+  color: white;
+  background-color: #43b7e8;
+  padding: 10px;
+}
+
+/* Create two unequal columns that floats next to each other */
+/* Left column */
+.leftcolumn {   
+  width: 75%;
+  margin:0 auto;
+}
+
+/* Fake image */
+.fakeimg {
+  background-color: #aaa;
+  width: 100%;
+  padding: 20px;
+}
+
+/* Add a card effect for articles */
+.card {
+   background-color: white;
+   padding: 20px;
+   margin-top: 20px;
+}
+.card:hover {
+	background-color: #43b7e8;
+	box-shadow: 0px 2px 14px 0px #710201;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+.postdescription {
+  background: #f1f1f1;
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0px 2px 14px 0px #710201;
+}
+.user-info {
+  display: inline-block;
+  float: right;
+  margin-right: 5px;
+}
+.comments {
+    width: 80%;
+    margin: 0 auto;
+    /* border: 1px solid aqua; */
+    padding: 10px;
+}
+.action-btn {
+  background-color: #43b7e8;
+  border: none;
+  color: white;
+  padding: 15px 32px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 20px;
+  float: right;
+}
+.action-btn:hover {
+  cursor: pointer;
+}
+.comments-btn {
+  display: inline-block;
+    border: 1px solid black;
+    padding: 3px;
+    background: #fff;
+    border-radius: 12px;
+}
+.comments-btn:hover {
+  cursor: pointer;
+}
+
+/* Footer */
+.footer {
+  padding: 20px;
+  text-align: center;
+  background: #ddd;
+  margin-top: 20px;
+}
+
+#progress_bar {
+  animation-name: example;
+  animation-duration: 8s;
+}
+@keyframes example {
+  0%   { color: red; }
+  25%  { color: yellow; }
+  50%  { color: blue; }
+  100% { color: green; }
+}
+
+/* Responsive layout - when the screen is less than 800px wide, make the two columns stack on top of each other instead of next to each other */
+@media screen and (max-width: 800px) {
+  .leftcolumn, .rightcolumn {   
+    width: 100%;
+    padding: 0;
+  }
+}
+</style>
+
+<script type="text/javascript">
+
+function addToContainer(postData) {
+  var new_div = document.createElement( 'div' );
+  var new_title = document.createElement('h2');
+  var new_description = document.createElement('p');
+  var postedBy = document.createElement('span');
+  var commentsButton = document.createElement('span');
+
+  new_title.innerText = postData.title;
+  new_description.innerText = postData.body;
+  postedBy.innerText = 'Posted By: '+ postData.userId;
+  commentsButton.innerText = 'Comments';
+
+  var comments_div = document.createElement( 'div' );
+
+  postData.comments.forEach(function(comment) {
+    var comment_div =  document.createElement( 'div' );
+    var name = document.createElement('h2');
+    var body = document.createElement('p');
+    var commentBy = document.createElement('p');
+
+    name.innerText = comment.name;
+    body.innerText = comment.body;
+    commentBy.innerText = 'Commented By: ' + comment.email;
+
+    commentBy.classList.add('user-info')
+
+    comment_div.style.clear = "both";
+
+    comment_div.appendChild(name);
+    comment_div.appendChild(body);
+    comment_div.appendChild(commentBy);
+
+    comments_div.appendChild(comment_div);
+  })
+
+  new_div.classList.add('card');
+  new_description.classList.add('postdescription');
+  postedBy.classList.add('user-info');
+  comments_div.classList.add('comments');
+  commentsButton.classList.add('comments-btn');
+
+  new_div.appendChild(new_title);
+  new_div.appendChild(new_description);
+  new_div.appendChild(postedBy);
+  new_div.appendChild(commentsButton);
+  new_div.appendChild(comments_div);
+
+  comments_div.style.display = "none";
+
+  commentsButton.addEventListener('click', function(e){
+    var elem = comments_div;
+    if (elem.style.display === "none") {
+      elem.style.display = "block";
+    } else {
+      elem.style.display = "none";
+    }
+ });
+
+  var container_div = document.getElementById('main');
+  container_div.appendChild(new_div);
+}
+
+function removeAll() {
+  var container_div = document.getElementById('main');
+    while (container_div.firstChild) {
+      container_div.removeChild(container_div.firstChild);
+    }
+}
+
+function loadPosts() {
+  var xhttp = new XMLHttpRequest();
+
+  document.getElementById('progress_bar').style.display = 'block';
+  xhttp.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      removeAll();
+      response = JSON.parse(this.response);
+      response.data.forEach(post => addToContainer(post))
+    }
+  };
+  xhttp.open("GET", "https://cc2p4dzur9.execute-api.ap-south-1.amazonaws.com/dev/prodapt/service/posts", true);
+  xhttp.send();
+  // response = JSON.parse(sample);
+  // response.data.forEach(post => addToContainer(post))
+}
+</script>
+</head>
+<body>
+
+<div class="header">
+  <h2 style="margin: 0">Prodapt NL User Feeds</h2>
+</div>
+
+<div class="row">
+  <div class="leftcolumn" id="main">
+     <button type="button" onclick="loadPosts()" class="action-btn">All Posts</button>
+     <p id='progress_bar' style="display: none;">Loading Posts....</p>
+  </div>
+</div>
+
+</body>
+</html>

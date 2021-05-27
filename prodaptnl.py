@@ -7,6 +7,7 @@ Date: 25-May-2021
 from multiprocessing.dummy import Pool
 import concurrent.futures
 import pymongo
+from pprint import pprint
 import requests
 import ssl
 
@@ -14,6 +15,14 @@ import constant
 
 
 def update_data(mongo_uri, users, posts, comments):
+    """
+        Updates the Mongo db with users, posts and comments details.
+        Args:
+            mongo_uri: Mongo uri to connect to the mongo database
+            users: user details
+            posts: post details
+            comments: comments details
+    """
     db_client = pymongo.MongoClient(mongo_uri, ssl_cert_reqs=ssl.CERT_NONE)
     db = db_client.userFeeds
     for user_detail in sorted(users):
@@ -32,21 +41,13 @@ def update_data(mongo_uri, users, posts, comments):
         db.posts.update_one(key, data, upsert=True)
 
     for comment_detail in sorted(comments):
-        key = {"commentId": post_detail}
+        key = {"commentId": comment_detail}
         data = {"$set": {"commentId": comment_detail,
                          "name": comments[comment_detail]["name"],
                          "email": comments[comment_detail]["email"],
                          "body": comments[comment_detail]["body"],
                          }}
         db.comments.update_one(key, data, upsert=True)
-
-
-def on_success():
-    print(" DB update completed")
-
-
-def on_failure():
-    print(" Error while updating DB ")
 
 
 class ProdaptNLService:
@@ -65,6 +66,9 @@ class ProdaptNLService:
 
     @classmethod
     def get_data_from_external_api(cls):
+        """
+            Class method which will fetch the external apis data
+        """
         posts_response = requests.get(constant.POSTS_URL)
         if posts_response.status_code == 200:
             posts_response = posts_response.json()
@@ -74,6 +78,9 @@ class ProdaptNLService:
         return cls(posts_response, comments_response)
 
     def process_data_from_api(self):
+        """
+            Process the response from external apis and store them in python dictionaries
+        """
         for i in self.posts_data:
             user_id = i.get("userId")
             post_id = i.get("id")
@@ -105,18 +112,23 @@ class ProdaptNLService:
                     self.posts[post_id]["comments"].append(comment_detail)
 
     def get_posts(self):
+        """
+            Return the posts data when api call is made
+            Returns:
+                dictionary of posts
+        """
         response = {"data": list(self.posts.values())}
         return response
 
-    '''def get_post_by_id(self, post_id):
-        response = {"data": self.posts[post_id]}
-        return response
-
-    def get_comment_by_id(self, comment_id):
-        response = {"data": self.comments[comment_id]}
-        return response'''
-
     def get_post_comment_by_id(self, id_field, value):
+        """
+            Updates the Mongo db with users, posts and comments details.
+            Args:
+                id_field: to identify the post or comment entity
+                value: post/comment id
+            Returns:
+                dictionary of single post or comment id
+        """
         response = {}
         if id_field == "post":
             response = {"data": self.posts[value]}
@@ -125,17 +137,23 @@ class ProdaptNLService:
         return response
 
     @staticmethod
-    def get_mongo_db_client(self):
-        self.db_client = pymongo.MongoClient(
+    def get_mongo_db_client():
+        db_client = pymongo.MongoClient(
             f"mongodb+srv://{constant.DB_USER}:{constant.DB_PASSWORD}@userfeeds.48fue.mongodb.net/admin",
             ssl_cert_reqs=ssl.CERT_NONE)
-        self.db = self.db_client.userFeeds
-        return self.db_client, self.db
+        db = db_client.userFeeds
+        return db_client, db
 
     def upload_data_to_db(self):
+        """
+            Updates the Mongo db with data. It will trigger the mongo db update in separate thread.
+        """
         mongo_uri = f"mongodb+srv://{constant.DB_USER}:{constant.DB_PASSWORD}@userfeeds.48fue.mongodb.net/admin"
         with concurrent.futures.ThreadPoolExecutor(max_workers=1) as executor:
             executor.submit(update_data, mongo_uri, self.users, self.posts, self.comments)
 
 
-prodapt_obj = ProdaptNLService.get_data_from_external_api()
+if __name__ == "__main__":
+    prodapt_obj = ProdaptNLService.get_data_from_external_api()
+    # prodapt_obj.posts will be single dictionary with all comments and user details
+    pprint(prodapt_obj.posts)
