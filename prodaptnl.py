@@ -138,4 +138,7 @@ class ProdaptNLService:
             executor.submit(update_data, mongo_uri, self.users, self.posts, self.comments)
 
 
-prodapt_obj = ProdaptNLService.get_data_from_external_api()
+if __name__ == "__main__":
+    prodapt_obj = ProdaptNLService.get_data_from_external_api()
+    # prodapt_obj.posts will be single dictionary with all comments and user details
+    print("Posts details :", prodapt_obj.posts)
