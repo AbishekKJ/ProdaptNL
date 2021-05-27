@@ -102,7 +102,7 @@ headers = {
 response = requests.request("GET", url, headers=headers)
 print(response.text)
 ```
-#Modules explained:
+# Modules explained:
 
 **AbishekKJ/ProdaptNL/prodaptnl.py**:
 * Python program which makes requests call to tehe external apis and will collate the data into single dictionary. Running this program standalone will pretty print posts dictionary which consists of all data.
@@ -194,27 +194,18 @@ Please follow below links to set up serverless and aws profile in the local linu
 **Burst concurrency quotas**
 
 * 3000 – US West (Oregon), US East (N. Virginia), Europe (Ireland)
-
 * 1000 – Asia Pacific (Tokyo), Europe (Frankfurt), US East (Ohio)
-
 * 500 – Other Regions
 
 So AWS lambda takes care of serving multiple requests at a time  and also we can use thread pools to multi thread the function calls for better performance
 
-
 **SERVERLESS**:
 
 * Serverless Framework is an open source project and popular choice for many Amazon Web Services (AWS) customers who wish to quickly construct and deploy serverless applications using services like AWS Lambda and Amazon API Gateway.
-
 * For developers and operations professionals, Serverless Framework builds, packages, and deploys code with one simple command: serverless deploy.
-
 * Serverless Framework is open source software that builds, compiles, and packages code for serverless deployment, and then deploys the package to the cloud.
-
 * With Python on AWS, for example, Serverless Framework creates the self-contained Python environment, including all dependencies. Then, it packages that environment into the standardized zip file for AWS Lambda and creates all of the associated AWS resources required for deployment in an AWS CloudFormation template.
-
 * Finally, it copies the code to AWS and initiates the CloudFormation stack creation or update, which provisions AWS services for the serverless application.
-
 * Serverless Framework does this by providing an event queue into which a combination of standard provided packages and templates can be combined with additional open source plugins to expand the functionality.
-
 * This event queue allows plugin developers to create hooks and alter the behaviors and outputs of each stage of the process (e.g. build, compile, package, provision, and deploy).
 
