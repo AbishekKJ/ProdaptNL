@@ -161,7 +161,7 @@
           "S3Bucket": {
             "Ref": "ServerlessDeploymentBucket"
           },
-          "S3Key": "serverless/prodaptnl/dev/1622056242072-2021-05-26T19:10:42.072Z/prodaptnl.zip"
+          "S3Key": "serverless/prodaptnl/dev/1622056854065-2021-05-26T19:20:54.065Z/prodaptnl.zip"
         },
         "Handler": "handler.get_user_posts_comments",
         "Runtime": "python3.8",
@@ -179,14 +179,14 @@
         "ProdaptNLServiceLogGroup"
       ]
     },
-    "ProdaptNLServiceLambdaVersion8mB7ZBDZuKc7ZRVnqztCmSuDOEYgUPnsV6bnnoXL1Ak": {
+    "ProdaptNLServiceLambdaVersionS3wjWuuoaSxGdoQLj0lx0Y8XHrvDIIJyaVEeG3KtfU": {
       "Type": "AWS::Lambda::Version",
       "DeletionPolicy": "Retain",
       "Properties": {
         "FunctionName": {
           "Ref": "ProdaptNLServiceLambdaFunction"
         },
-        "CodeSha256": "iwAcv2YS83WJgQA3kWitV7DSDlMXM2s4qFb3FQ2dzqI="
+        "CodeSha256": "HGbFKGuYZ4JH4jHwDTPOHLUV1NFEqLFnjb/bRja6kAY="
       }
     },
     "ApiGatewayRestApi": {
@@ -552,7 +552,7 @@
         "MethodResponses": []
       }
     },
-    "ApiGatewayDeployment1622056236334": {
+    "ApiGatewayDeployment1622056849071": {
       "Type": "AWS::ApiGateway::Deployment",
       "Properties": {
         "RestApiId": {
@@ -619,7 +619,7 @@
     "ProdaptNLServiceLambdaFunctionQualifiedArn": {
       "Description": "Current Lambda function version",
       "Value": {
-        "Ref": "ProdaptNLServiceLambdaVersion8mB7ZBDZuKc7ZRVnqztCmSuDOEYgUPnsV6bnnoXL1Ak"
+        "Ref": "ProdaptNLServiceLambdaVersionS3wjWuuoaSxGdoQLj0lx0Y8XHrvDIIJyaVEeG3KtfU"
       },
       "Export": {
         "Name": "sls-prodaptnl-dev-ProdaptNLServiceLambdaFunctionQualifiedArn"
