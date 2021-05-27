@@ -7,6 +7,7 @@ Date: 25-May-2021
 from multiprocessing.dummy import Pool
 import concurrent.futures
 import pymongo
+from pprint import pprint
 import requests
 import ssl
 
@@ -141,4 +142,4 @@ class ProdaptNLService:
 if __name__ == "__main__":
     prodapt_obj = ProdaptNLService.get_data_from_external_api()
     # prodapt_obj.posts will be single dictionary with all comments and user details
-    print("Posts details :", prodapt_obj.posts)
+    pprint(prodapt_obj.posts)
