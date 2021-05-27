@@ -205,6 +205,30 @@ Please follow below links to set up serverless and aws profile in the local linu
 * https://www.serverless.com/framework/docs/providers/aws/guide/credentials/
  
 
+# User Interface
+
+* Developed a UI for users without python/linux knowledge.
+* Developed a simple HTML/JavaScript page which will make ajax call to the REST api created above and will display the posts with comments.
+
+**Homepage**:
+
+<p align="center">
+  <img src="./img/indexhtml.png" alt="Size Limit CLI" width="738">
+</p>
+
+**Posts**:
+
+<p align="center">
+  <img src="./img/feeds.png" alt="Size Limit CLI" width="738">
+</p>
+
+**Comments**:
+
+<p align="center">
+  <img src="./img/feedswithcomments.png" alt="Size Limit CLI" width="738">
+</p>
+
+
 # Why SERVERLESS Framework and AWS Lambda:
 
 **AWS LAMBDA**:
