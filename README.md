@@ -213,6 +213,14 @@ Please follow below links to set up serverless and aws profile in the local linu
 
 * Your functions' concurrency is the number of instances that serve requests at a given time. For an initial burst of traffic, your functions' cumulative concurrency in a Region can reach an initial level of between 500 and 3000, which varies per Region. Note that the burst concurrency quota is not per-function; it applies to all of your functions in the Region.
 
+**Horizontal Scaling**:
+* AWS Lambda Platform creates new instances to handle concurrent requests
+
+**Vertical Scaling**:
+* AWS Lambda also has a rudimentary vertical scaling option, however, in its memory configuration* Lambda functions can be configured (manually) to have from 128MB to 1.5GB of RAM, and the CPU performance capability of a Lambda function scales ‘roughly proportionally’ with the memory setting.
+* In other words you may see a 12X CPU performance improvement going from 128MB to 1.5GB RAM configuration.
+* Network I/O ability also scales with RAM.
+
 **Burst concurrency quotas**
 
 * 3000 – US West (Oregon), US East (N. Virginia), Europe (Ireland)
